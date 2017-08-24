@@ -21,10 +21,10 @@ MODEL_NAME = 'regression_model'
 # load dataset
 
 # load dataset
-columns = ['dayOfWeek', 'formattedTime', 'operationType', 'fileType', 'parentFolder', 'fileSize',
+columns = ['dayOfWeek', 'hour', 'operationType', 'fileType', 'parentFolder', 'fileSize',
            'predessorFile1', 'predessorFile2', 'predessorFile3', 'predessorFile4', 'filename',
            'successorFile1', 'successorFile2', 'successorFile3', 'successorFile4']
-dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/test2-08-12.csv", header=None, names=columns)
+dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/test_v3.csv", header=None, names=columns)
 # dataset = dataframe.values
 dataset = dataframe.values
 scaler = MinMaxScaler(feature_range=(0, 1))
@@ -141,17 +141,7 @@ estimator.fit(X_train, y_train, epochs=20, batch_size=1, verbose=1)
 # # model.fit(X_train, y_train, epochs=20, batch_size=5, verbose=2)
 # #
 
-prediction = estimator.predict(numpy.array([ [3,
-        104809,
-        3,
-         0,
-        231,
-        20480,
-        5392,
-        5392,
-        5393,
-        5393,
-        232]]))
+prediction = estimator.predict(X_test)
 print (prediction)
 prediction = prediction.astype(int)
 # print (" test X shape" + X.shape)
