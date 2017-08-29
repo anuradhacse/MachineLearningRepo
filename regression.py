@@ -61,7 +61,6 @@ def larger_model():
     model = Sequential()
     model.add(Dense(11, input_dim=11, kernel_initializer='normal', activation="relu"))
     model.add(Dense(1, kernel_initializer='normal', activation="relu"))
-    # model.add(Dense(1, kernel_initializer='normal'))
     # Compile model
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
     return model
@@ -157,7 +156,7 @@ prediction = prediction.astype(int)
 
 # print(n.name) for n in tf.get_default_graph().as_graph_def().node
 
-# export_model(tf.train.Saver(), estimator, ["dense_1_input"], "dense_2/Relu")
+export_model(tf.train.Saver(), estimator, ["dense_1_input"], "dense_2/Relu")
 
 # invert predictions
 # trainY = scaler.inverse_transform(numpy.array(Y))
