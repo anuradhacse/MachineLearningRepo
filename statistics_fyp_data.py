@@ -6,7 +6,7 @@ import seaborn as sns;
 columns = ['day', 'hour', 'op', 'ftype', 'parent', 'fileSize',
            'p1', 'p2', 'p3', 'p4', 'filename',
            's1', 's2', 's3', 's4']
-dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/test_v3.csv", header=None, names=columns)
+dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/data_refined.csv", header=None, names=columns)
 
 print (dataframe.info())
 print (dataframe.describe())
