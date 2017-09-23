@@ -18,6 +18,7 @@ np.random.seed(0)
 columns = ['dayOfWeek', 'hour', 'operationType', 'fileType', 'parentFolder', 'fileSize',
            'predessorFile1', 'predessorFile2', 'predessorFile3', 'predessorFile4', 'filename',
            'successorFile1', 'successorFile2', 'successorFile3', 'successorFile4']
+
 # Create a dataframe with the four feature variables
 dataframe = pd.read_csv("/home/anuradha/PycharmProjects/data/fyp/final/test-after-filtered.csv", header=None, names=columns)
 
@@ -31,38 +32,40 @@ dataframe = pd.read_csv("/home/anuradha/PycharmProjects/data/fyp/final/test-afte
 # be used as the training data and some as the test data.
 dataframe['is_train'] = np.random.uniform(0, 1, len(dataframe)) <= .75
 
-# View the top 5 rows
-# print(dataframe.head())
-# Create two new dataframes, one with the training rows, one with the test rows
-train, test = dataframe[dataframe['is_train']==True], dataframe[dataframe['is_train']==False]
+# # View the top 5 rows
+# # print(dataframe.head())
+# # Create two new dataframes, one with the training rows, one with the test rows
+# train, test = dataframe[dataframe['is_train']==True], dataframe[dataframe['is_train']==False]
 
-# Show the number of observations for the test and training dataframes
-print('Number of observations in the training data:', len(train))
-print('Number of observations in the test data:',len(test))
+
 
 dataframe.drop(dataframe.columns[[0, 1,5]], axis=1, inplace=True)
 
 # Create a list of the feature column's names
-dataset = train.values
+dataset = dataframe.values
 # split into input (X) and output (Y) variables
 X = dataset[:, 0:9]
 Y = dataset[:, 8]
-Y_train = np.asarray(train['successorFile1'], dtype="|S6")
+Y_train = np.asarray(Y, dtype="|S6")
 # View features
 
 
-
 # Create a random forest Classifier. By convention, clf means 'Classifier'
-clf = RandomForestClassifier(n_estimators=100, n_jobs=2, random_state=0)
+clf = RandomForestClassifier(n_estimators=200, max_features= 'auto', n_jobs=-1,
+                             random_state=0, verbose = 1, min_samples_leaf= 10
+                             )
 
 # Train the Classifier to take the training features and learn how they relate
 # to the training y (the species)
 clf.fit(X,Y_train)
 
 # Apply the Classifier we trained to the test data (which, remember, it has never seen before)
-prdictions = clf.predict(test.values[:, 0:9])
+prdictions = clf.predict(X[:, 0:9])
 print ("first ten predictions: ", prdictions[0:10])
-print ("actual values : ",(test['successorFile1'][0:10]))
+print ("actual values : ",(Y[0:10]))
+
+# View a list of the features and their importance scores
+print(clf.feature_importances_)
 
 # View the predicted probabilities of the first 10 observations
 # probs = clf.predict_proba(test.values[:, 0:9])[0:10]
