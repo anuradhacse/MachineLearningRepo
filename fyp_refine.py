@@ -24,18 +24,17 @@ columns = ['dayOfWeek', 'hour', 'operationType', 'fileType', 'parentFolder', 'fi
            'predessorFile1', 'predessorFile2', 'predessorFile3', 'predessorFile4', 'filename',
            'successorFile1', 'successorFile2', 'successorFile3', 'successorFile4']
 
-dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/test_v3.csv", header=None, names=columns)
+dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/final/test-after-filtered.csv", header=None, names=columns)
 # dataset = dataframe.values
 dataset = dataframe.values
 
-dataframe.drop(dataframe.columns[[0, 1,2,5]], axis=1, inplace=True)
+dataframe.drop(dataframe.columns[[0, 1,5]], axis=1, inplace=True)
 
-dataset = preprocessing.scale(dataset)
 print(dataframe.describe())
 
 # split into input (X) and output (Y) variables
-normalizedX = dataset[:, 2:7]
-Y = dataset[:, 7]
+X = dataset[:, 0:9]
+Y = dataset[:, 8]
 
 # fix random seed for reproducibility
 seed = 7
@@ -43,29 +42,30 @@ seed = 7
 # evaluate model with standardized dataset
 numpy.random.seed(seed)
 
-# scaler = Normalizer().fit(X)
-# normalizedX = scaler.transform(X)
+scaler = Normalizer().fit(X)
+normalizedX = scaler.transform(X)
 
 # normalizedX = preprocessing.scale(X)
 
 # summarize transformed data
-numpy.set_printoptions(precision=3)
+# numpy.set_printoptions(precision=3)
 print(normalizedX[0:7,:])
 
 
 # create model
 model = Sequential()
-model.add(Dense(7, input_dim=5, kernel_initializer='normal', activation="relu", use_bias= True))
+model.add(Dense(9, input_dim=9, kernel_initializer='normal', activation="relu", use_bias= True))
 model.add(Dense(1, kernel_initializer='normal', activation="relu"))
 
 
-model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['accuracy'])
 
 X_train, X_test, y_train, y_test = train_test_split(normalizedX, Y)
 
-model.fit(X_train, y_train, batch_size=1, epochs=20, verbose=2)
+model.fit(X_train, y_train, batch_size=20, epochs=2000, verbose=2)
 score = model.evaluate(X_test, y_test, batch_size=1, verbose=2)
 
+print("score : ",score)
 model.save("models/regression_model.h5")
 
 prediction = model.predict(X_test)

@@ -6,14 +6,15 @@ import seaborn as sns;
 columns = ['day', 'hour', 'op', 'ftype', 'parent', 'fileSize',
            'p1', 'p2', 'p3', 'p4', 'filename',
            's1', 's2', 's3', 's4']
-dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/data_refined.csv", header=None, names=columns)
+dataframe = pandas.read_csv("/home/anuradha/PycharmProjects/data/fyp/final/test-after-filtered.csv", header=None, names=columns)
 
 print (dataframe.info())
 print (dataframe.describe())
-print (dataframe.sample(5))
-print (dataframe.drop_duplicates().fileSize.value_counts())
-print (dataframe.drop_duplicates().filename.value_counts())
-print (dataframe.drop_duplicates().parent.value_counts())
+# print (dataframe.sample(5))
+# print (dataframe.drop_duplicates().fileSize.value_counts())
+# print (dataframe.drop_duplicates().filename.value_counts())
+print (dataframe.drop_duplicates().s1.value_counts())
+# print (dataframe.drop_duplicates().parent.value_counts())
 
 
 # dataframe['op'].value_counts().plot(kind='bar', title='Training examples by operation types');

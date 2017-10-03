@@ -148,7 +148,7 @@ prediction = prediction.astype(int)
 # print(prediction[:10])
 # print (y_test[:10])
 
-# print(K.get_session().graph.get_operations())
+print(K.get_session().graph.get_operations())
 #
 # print(K.get_session().graph.get_all_collection_keys())
 
